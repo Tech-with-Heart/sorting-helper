@@ -11,10 +11,10 @@ export class PointsComponent implements OnInit {
   selectedPoint = signal(
     PointMapper.fromDTO({
       _id: '',
-      address: 'Wodna 2, Poznań',
-      description: 'Carrefour market',
-      latitude: 0,
-      longitude: 0,
+      address: 'SKLEP ŻABKA - UMIŃSKIEGO 12',
+      description: 'Punkt, do którego można oddawać zużyte baterie i akumulatory.',
+      latitude: 52.394319,
+      longitude: 16.909855,
       pointType: 'batteries',
     })
   );
