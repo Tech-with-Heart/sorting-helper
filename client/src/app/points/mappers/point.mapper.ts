@@ -12,7 +12,7 @@ export class PointMapper {
 
   static fromDTO(dto: PointDTO): Point | null {
     try {
-      const pointType = this.getPointType(dto.pointType);
+      const pointType = PointMapper.getPointType(dto.pointType);
 
       return new Point(
         dto.address,

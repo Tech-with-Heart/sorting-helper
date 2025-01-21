@@ -1,33 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import {
-  Icon,
   icon,
+  Icon,
   latLng,
-  Marker,
+  Layer,
   marker,
-  polygon,
+  MarkerClusterGroup,
+  MarkerClusterGroupOptions,
   tileLayer,
-  
 } from 'leaflet';
+import 'leaflet.markercluster';
+import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster';
+import { PointService } from './services/point.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-points',
-  imports: [LeafletModule],
+  imports: [LeafletModule, LeafletMarkerClusterModule],
   templateUrl: './points.component.html',
   styleUrl: './points.component.scss',
 })
-export class PointsComponent implements OnInit {
-  // selectedPoint = signal(
-  //   PointMapper.fromDTO({
-  //     _id: '',
-  //     address: 'SKLEP ŻABKA - UMIŃSKIEGO 12',
-  //     description: 'Punkt, do którego można oddawać zużyte baterie i akumulatory.',
-  //     latitude: 52.394319,
-  //     longitude: 16.909855,
-  //     pointType: 'batteries',
-  //   })
-  // );
+export class PointsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   private defaultIcon = icon({
     ...Icon.Default.prototype.options,
@@ -46,17 +41,32 @@ export class PointsComponent implements OnInit {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }),
     ],
-    zoom: 10,
-    center: latLng(this.initLatLng),
+    zoom: 3,
+    center: latLng(this.initLatLng)
   };
 
-  mapLayers: Marker[] = [];
+  markerClusterGroup: MarkerClusterGroup = new MarkerClusterGroup();
+  markerClusterData: Layer[] = [];
+  markerClusterOptions: MarkerClusterGroupOptions = {};
 
-  ngOnInit() {
-    this.mapLayers = [
-      marker(this.initLatLng, {
-        icon: this.defaultIcon,
-      }).bindPopup('halko'),
-    ];
+  constructor(private pointService: PointService) {}
+
+  ngOnInit(): void {
+    this.pointService
+      .getPoints()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        const markerClusterData: any[] = [];
+        data.forEach(point => {
+          markerClusterData.push(marker([point.latitude, point.longitude], { icon: this.defaultIcon }))
+        })
+
+        this.markerClusterData = markerClusterData;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
