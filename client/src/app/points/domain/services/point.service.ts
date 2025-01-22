@@ -16,18 +16,15 @@ export class PointService {
 
   getPoints(): Observable<Point[]> {
     if (this.pointsStore.hasPoints()) {
-      console.log("from store")
       return of(this.pointsStore.getPoints());
     }
 
-    console.log("from api")
     return this.pointsApiService.getAllPoints().pipe(
       tap((points) => this.pointsStore.setPoints(points))
     );
   }
 
   getFilteredPoints(type: PointType): Observable<Point[]> {
-    console.log(type)
     return this.getPoints().pipe(
       map(points => points.filter(point => point.pointType === type))
     );

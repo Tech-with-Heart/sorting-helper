@@ -3,11 +3,11 @@ import { Point, PointType } from '../../domain/models/point.model';
 
 export class PointMapper {
   private static getPointType(pointType: string): PointType {
-    if (!Object.values(PointType).includes(pointType)) {
+    if (!Object.values(PointType).includes(pointType as PointType)) {
       throw Error(`Could not parse point, no such pointType ${pointType}`);
     }
 
-    return PointType[pointType as keyof typeof PointType];
+    return pointType as PointType;
   }
 
   static fromDTO(dto: PointDTO): Point | null {
