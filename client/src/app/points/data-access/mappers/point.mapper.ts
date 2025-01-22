@@ -1,5 +1,5 @@
 import { PointDTO } from '../models/point.dto';
-import { Point, PointType } from '../models/point.model';
+import { Point, PointType } from '../../domain/models/point.model';
 
 export class PointMapper {
   private static getPointType(pointType: string): PointType {

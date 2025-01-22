@@ -12,8 +12,8 @@ import {
 } from 'leaflet';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster';
-import { PointService } from './services/point.service';
 import { Subject, takeUntil } from 'rxjs';
+import { PointService } from './domain/services/point.service';
 
 @Component({
   selector: 'app-points',
@@ -41,7 +41,7 @@ export class PointsComponent implements OnInit, OnDestroy {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }),
     ],
-    zoom: 3,
+    zoom: 7,
     center: latLng(this.initLatLng)
   };
 

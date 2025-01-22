@@ -2,7 +2,8 @@ export enum PointType {
   'batteries',
   'pills',
   'general',
-  'electronics'
+  'electronics',
+  'clothes'
 }
 
 export class Point {
