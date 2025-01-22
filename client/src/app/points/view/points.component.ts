@@ -75,7 +75,7 @@ export class PointsComponent implements OnInit, OnDestroy {
           markerClusterData.push(
             marker([point.latitude, point.longitude], {
               icon: this.defaultIcon,
-            })
+            }).bindPopup(`<h5>${point.address}</h5><p>${point.description}</p>`)
           );
         });
 
