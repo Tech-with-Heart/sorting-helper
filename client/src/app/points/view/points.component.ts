@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import {
   icon,
@@ -26,7 +26,7 @@ import { PointType } from '../domain/models/point.model';
   selector: 'app-points',
   imports: [LeafletModule, LeafletMarkerClusterModule, SearchPanelComponent],
   templateUrl: './points.component.html',
-  styleUrl: './points.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PointsComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
@@ -52,11 +52,10 @@ export class PointsComponent implements OnInit, OnDestroy {
     center: latLng(this.initLatLng),
   };
 
-  markerClusterGroup: MarkerClusterGroup = new MarkerClusterGroup();
-  markerClusterData: Layer[] = [];
-  markerClusterOptions: MarkerClusterGroupOptions = {};
+  readonly markerClusterOptions: MarkerClusterGroupOptions = {};
+  markerClusterData = signal<Layer[]>([])
 
-  selectedPointType$ = new BehaviorSubject<PointType | ''>('');
+  readonly selectedPointType$ = new BehaviorSubject<PointType | ''>('');
 
   constructor(private pointService: PointService) {}
 
@@ -69,8 +68,7 @@ export class PointsComponent implements OnInit, OnDestroy {
       ),
       takeUntil(this.destroy$),
     ).subscribe(data => {
-      console.log(data)
-        const markerClusterData: any[] = [];
+        const markerClusterData: Layer[] = [];
         data.forEach((point) => {
           markerClusterData.push(
             marker([point.latitude, point.longitude], {
@@ -79,7 +77,7 @@ export class PointsComponent implements OnInit, OnDestroy {
           );
         });
 
-        this.markerClusterData = markerClusterData;
+        this.markerClusterData.set(markerClusterData)
     })
   }
 

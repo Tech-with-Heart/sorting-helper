@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-add-point',
   imports: [],
   templateUrl: './add-point.component.html',
-  styleUrl: './add-point.component.scss'
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddPointComponent {
 

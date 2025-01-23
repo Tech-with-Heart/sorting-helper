@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +16,7 @@ import { PointType } from '../../domain/models/point.model';
   ],
   templateUrl: './search-panel.component.html',
   styleUrl: './search-panel.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchPanelComponent {
   private readonly optionsInput: { [k in PointType | '']: string } = {

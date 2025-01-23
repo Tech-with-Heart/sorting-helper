@@ -9,7 +9,7 @@ export const routes: Routes = [
     component: PointsComponent
   },
   {
-    path: 'dodaj-punkt',
+    path: 'kontakt',
     component: AddPointComponent
   },
   {
